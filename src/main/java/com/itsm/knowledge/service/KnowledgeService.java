@@ -42,4 +42,23 @@ public class KnowledgeService {
         article.setStatus("PUBLISHED");
         return knowledgeRepository.save(article);
     }
+
+    @Transactional
+    public KnowledgeArticle updateArticle(String id, String tenantId, KnowledgeArticle update) {
+        KnowledgeArticle article = getArticle(id, tenantId)
+                .orElseThrow(() -> new RuntimeException("Article not found"));
+        if (update.getTitle() != null) article.setTitle(update.getTitle());
+        if (update.getContent() != null) article.setContent(update.getContent());
+        if (update.getCategory() != null) article.setCategory(update.getCategory());
+        if (update.getTags() != null) article.setTags(update.getTags());
+        return knowledgeRepository.save(article);
+    }
+
+    @Transactional
+    public void deleteArticle(String id, String tenantId) {
+        KnowledgeArticle article = getArticle(id, tenantId)
+                .orElseThrow(() -> new RuntimeException("Article not found"));
+        knowledgeRepository.delete(article);
+        log.info("Deleted knowledge article {} for tenant {}", id, tenantId);
+    }
 }

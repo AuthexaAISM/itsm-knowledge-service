@@ -49,4 +49,20 @@ public class KnowledgeController {
             @PathVariable String id) {
         return ResponseEntity.ok(knowledgeService.publishArticle(id, tenantId));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<KnowledgeArticle> updateArticle(
+            @PathVariable String tenantId,
+            @PathVariable String id,
+            @RequestBody KnowledgeArticle update) {
+        return ResponseEntity.ok(knowledgeService.updateArticle(id, tenantId, update));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteArticle(
+            @PathVariable String tenantId,
+            @PathVariable String id) {
+        knowledgeService.deleteArticle(id, tenantId);
+        return ResponseEntity.noContent().build();
+    }
 }
